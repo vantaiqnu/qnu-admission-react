@@ -11,11 +11,6 @@ export default function Dashboard({ files, setPage }) {
       <StatCard label="Chờ duyệt" value={0} sub="Chưa có kết quả duyệt" />
       <StatCard label="Cảnh báo" value={0} sub="Chưa có cảnh báo" />
     </div>
-    <div className="two-column">
-      <section><h2>Hồ sơ gần đây</h2><div className="card empty-state"><div className="empty-icon">▱</div><h3>{files.length ? `${files.length} file đã được tải lên` : 'Chưa có hồ sơ nào'}</h3><p>{files.length ? 'Dữ liệu chỉ tồn tại trong phiên trình duyệt hiện tại.' : 'Hãy tải hồ sơ đầu tiên để bắt đầu.'}</p><button className="primary" onClick={() => setPage('upload')}>{files.length ? 'Tải thêm hồ sơ' : '＋ Tải hồ sơ đầu tiên'}</button></div></section>
-      <section><h2>Luồng xử lý</h2><div className="card flow-card">
-        {[['01','Tiếp nhận','Ảnh / PDF'],['02','Tiền xử lý','OpenCV + Pillow'],['03','OCR','PaddleOCR / Tesseract'],['04','Đối chiếu','Regex + Pandas + Rules'],['05','Human-in-the-loop','Cán bộ phê duyệt']].map(([no,t,s]) => <div className="flow-row" key={no}><span className="step">{no}</span><div><b>{t}</b><div className="muted">{s}</div></div></div>)}
-      </div></section>
-    </div>
+    <section><h2>Hồ sơ gần đây</h2><div className="card empty-state"><div className="empty-icon">▱</div><h3>{files.length ? `${files.length} file đã được tải lên` : 'Chưa có hồ sơ nào'}</h3><p>{files.length ? 'Dữ liệu chỉ tồn tại trong phiên trình duyệt hiện tại.' : 'Hãy tải hồ sơ đầu tiên để bắt đầu.'}</p><button className="primary" onClick={() => setPage('upload')}>{files.length ? 'Tải thêm hồ sơ' : '＋ Tải hồ sơ đầu tiên'}</button></div></section>
   </>
 }
