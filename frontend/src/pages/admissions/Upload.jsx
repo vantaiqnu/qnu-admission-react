@@ -10,6 +10,7 @@ export default function Upload({ addFiles, setPage, onRequireAuth }) {
   const [docType, setDocType] = useState('Học bạ / Bảng điểm')
   const [selected, setSelected] = useState([])
   const [cameraOpen, setCameraOpen] = useState(false)
+  const [dragActive, setDragActive] = useState(false)
   const [ocrSource, setOcrSource] = useState(null)
   const { result, status, progress, error, runOcr } = useOcr()
 
@@ -18,15 +19,25 @@ export default function Upload({ addFiles, setPage, onRequireAuth }) {
     runOcr(file)
   }
 
-  const onFiles = (e) => {
-    if (!onRequireAuth('upload')) {
-      e.target.value = ''
-      return
-    }
-    const files = Array.from(e.target.files || [])
+  const handleFiles = (rawFiles) => {
+    const files = rawFiles.filter((file) => (
+      file.type.startsWith('image/') || file.type === 'application/pdf'
+    ))
     setSelected(files)
     const image = files.find((file) => file.type.startsWith('image/'))
     if (image) processImage(image)
+  }
+
+  const onFiles = (e) => {
+    handleFiles(Array.from(e.target.files || []))
+    e.target.value = ''
+  }
+
+  const onDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    handleFiles(Array.from(e.dataTransfer.files || []))
   }
 
   const receive = () => {
@@ -58,7 +69,22 @@ export default function Upload({ addFiles, setPage, onRequireAuth }) {
           </select>
 
           <label className="upload-label">Chọn file</label>
-          <label className="dropzone">
+          <label
+            className={`dropzone ${dragActive ? 'drag-active' : ''}`}
+            onDragEnter={(e) => {
+              e.preventDefault()
+              setDragActive(true)
+            }}
+            onDragOver={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault()
+              if (e.currentTarget === e.target) setDragActive(false)
+            }}
+            onDrop={onDrop}
+          >
             <span className="upload-icon">⇧</span>
             <b>Kéo thả hoặc chọn file</b>
             <span className="muted">JPG, JPEG, PNG hoặc PDF</span>
@@ -66,9 +92,6 @@ export default function Upload({ addFiles, setPage, onRequireAuth }) {
               type="file"
               multiple
               accept=".jpg,.jpeg,.png,.pdf"
-              onClick={(event) => {
-                if (!onRequireAuth('upload')) event.preventDefault()
-              }}
               onChange={onFiles}
             />
           </label>
