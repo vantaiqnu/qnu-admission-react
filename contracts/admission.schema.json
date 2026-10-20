@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Admission document upload",
+  "type": "object",
+  "properties": {
+    "documentType": {
+      "type": "string"
+    },
+    "fileName": {
+      "type": "string"
+    },
+    "mimeType": {
+      "type": "string",
+      "enum": ["image/jpeg", "image/png"]
+    },
+    "ocr": {
+      "$ref": "ocr.schema.json"
+    }
+  },
+  "required": ["documentType", "fileName", "mimeType"]
+}

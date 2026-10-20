@@ -1,80 +1,57 @@
 # QNU Admission — ReactJS Frontend
 
-Frontend demo chuyển từ Streamlit sang ReactJS + Vite.
+Frontend demo quản lý và kiểm tra hồ sơ tuyển sinh, được tổ chức tách riêng theo ranh giới FE/BE.
 
-## QUAN TRỌNG: Không mở `index.html` bằng cách double-click
+## Cấu trúc repository
 
-Không chạy project bằng cách mở trực tiếp:
+```text
+frontend/   # React/Vite: giao diện, camera capture và OCR local
+backend/    # Tài liệu ranh giới API backend (chưa có server chạy thật)
+contracts/  # JSON Schema dùng chung giữa frontend và backend
+```
 
-`file:///.../index.html`
+### Frontend
 
-Cách này có thể làm màn hình trắng vì đây là ứng dụng React dùng ES Modules và Vite.
+Mã nguồn chính nằm trong `frontend/src/`:
 
-## Cách chạy trên Windows
+- `pages/admissions/Upload.jsx`: upload ảnh và mở camera.
+- `components/admissions/CameraCapture.jsx`: preview camera, chụp ảnh và giải phóng stream.
+- `hooks/useOcr.js`: quản lý trạng thái OCR.
+- `services/ocrService.js`: adapter Tesseract.js, nhận dạng `vie+eng`.
 
-### Cách 1 — dễ nhất
+OCR hiện chạy trực tiếp trong trình duyệt. Kết quả chỉ hiển thị bản xem trước trong phiên hiện tại, không tự lưu và không gắn vào hồ sơ.
 
-1. Cài **Node.js LTS**: https://nodejs.org/
-2. Giải nén project.
-3. Double-click `run.bat`.
-4. Chờ `npm install` hoàn tất ở lần đầu.
-5. Mở địa chỉ Vite hiển thị, thường là:
+### Backend và contracts
 
-`http://localhost:5173/`
+`backend/` chỉ mô tả trách nhiệm và hướng mở rộng API. `contracts/` định nghĩa hình dạng dữ liệu OCR/upload để sau này thay OCR local bằng API server-side mà không trộn mã FE và BE.
 
-### Cách 2 — dùng Terminal
+## Chạy trên Windows
 
-```bash
-cd qnu-admission-react
+```text
+cd frontend
 npm install
 npm run dev
 ```
 
-Sau đó mở:
+Hoặc chạy `frontend/run.bat`.
 
-`http://localhost:5173/`
+Mở địa chỉ Vite hiển thị, thường là `http://localhost:5173/`.
 
 ## Build production
 
-```bash
+```text
+cd frontend
 npm run build
 ```
 
-Kết quả nằm trong thư mục `dist/`.
+## Camera và giới hạn OCR
 
-## Deploy GitHub / Vercel / Netlify
+- Camera yêu cầu `localhost` hoặc HTTPS và quyền truy cập camera.
+- Chỉ hỗ trợ OCR ảnh JPG/JPEG/PNG trong phiên bản này; PDF vẫn chỉ là file upload.
+- Lần OCR đầu tiên có thể cần tải dữ liệu ngôn ngữ và mất thêm thời gian.
+- Ảnh mờ, thiếu sáng, nghiêng hoặc bị che có thể cho kết quả không chính xác.
+- Ứng dụng hiện là frontend-only: không có database, backend API hay lưu dữ liệu bền vững.
 
-Đưa toàn bộ project lên GitHub. Không cần upload `node_modules`.
+## Đăng nhập demo
 
-Build command:
-
-```text
-npm run build
-```
-
-Output directory:
-
-```text
-dist
-```
-
-## Trạng thái dữ liệu
-
-Project hiện là frontend-only:
-
-- Không có database.
-- Không có backend/API.
-- Không có dữ liệu sinh viên mẫu.
-- Dashboard ban đầu không có hồ sơ.
-- Không có OCR giả.
-- File người dùng chọn chỉ được lưu trong state của phiên trình duyệt.
-
-## Đăng nhập và đăng ký demo
-
-Login/Register hiện chỉ mô phỏng giao diện và điều hướng ở frontend. Không có tài khoản được tạo hoặc xác minh, không có mật khẩu được lưu, và trạng thái đăng nhập chỉ tồn tại trong bộ nhớ đến khi tải lại trang. Đây không phải cơ chế bảo mật và không nên dùng để bảo vệ dữ liệu thực tế; xác thực thật cần backend/API.
-
-Khách truy cập vẫn xem được các trang. Demo yêu cầu đăng nhập trước khi tiếp nhận file, thao tác phê duyệt/yêu cầu bổ sung hoặc thay đổi cấu hình. Sau đăng nhập, hãy thực hiện lại thao tác; upload cần chọn lại file.
-
-## Font chữ
-
-Website tải Inter 400, 500, 600, 700, 800 và 900 từ Google Fonts. Cần kết nối mạng để tải font; nếu tải thất bại, trình duyệt dùng font dự phòng.
+Login/Register chỉ mô phỏng frontend. Trạng thái đăng nhập tồn tại trong bộ nhớ đến khi tải lại trang và không phải cơ chế bảo mật.

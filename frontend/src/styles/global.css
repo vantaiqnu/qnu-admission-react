@@ -492,6 +492,90 @@ th {
   color: #9b3434;
 }
 
+.camera-trigger {
+  margin-top: 12px;
+}
+
+.secondary {
+  border: 1px solid #afc0e8;
+  background: #fff;
+  color: #365a9d;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary:disabled,
+.primary:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.camera-panel {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #dbe3f3;
+  border-radius: 12px;
+  background: #f8faff;
+}
+
+.camera-preview {
+  width: 100%;
+  max-height: 360px;
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #17233d;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.form-error {
+  color: #a33a3a;
+  font-size: 13px;
+}
+
+.ocr-result {
+  margin-top: 16px;
+}
+
+.ocr-result-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ocr-result-heading h3 {
+  margin: 0;
+}
+
+.ocr-progress progress {
+  width: 100%;
+  accent-color: #5278d6;
+}
+
+.ocr-text {
+  margin: 12px 0 0;
+  padding: 14px;
+  max-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font: inherit;
+  line-height: 1.55;
+  color: #24324a;
+  background: #f8faff;
+  border: 1px solid #e3e9f5;
+  border-radius: 8px;
+}
+
 /* --------------------------------------------------------------------------
    8. Warnings & Severity Grid
    -------------------------------------------------------------------------- */
@@ -1954,4 +2038,3 @@ th {
     font-size: 24px;
   }
 }
-

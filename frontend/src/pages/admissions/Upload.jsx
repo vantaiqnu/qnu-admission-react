@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import CameraCapture from '../../components/admissions/CameraCapture'
+import OcrResult from '../../components/admissions/OcrResult'
+import { useOcr } from '../../hooks/useOcr'
 
 function formatSize(bytes) { return `${(bytes / 1024).toFixed(1)} KB` }
 function ext(name) { return name.split('.').pop()?.toUpperCase() || 'FILE' }
@@ -6,13 +9,24 @@ function ext(name) { return name.split('.').pop()?.toUpperCase() || 'FILE' }
 export default function Upload({ addFiles, setPage, onRequireAuth }) {
   const [docType, setDocType] = useState('Học bạ / Bảng điểm')
   const [selected, setSelected] = useState([])
+  const [cameraOpen, setCameraOpen] = useState(false)
+  const [ocrSource, setOcrSource] = useState(null)
+  const { result, status, progress, error, runOcr } = useOcr()
+
+  const processImage = (file) => {
+    setOcrSource(file)
+    runOcr(file)
+  }
 
   const onFiles = (e) => {
     if (!onRequireAuth('upload')) {
       e.target.value = ''
       return
     }
-    setSelected(Array.from(e.target.files || []))
+    const files = Array.from(e.target.files || [])
+    setSelected(files)
+    const image = files.find((file) => file.type.startsWith('image/'))
+    if (image) processImage(image)
   }
 
   const receive = () => {
@@ -58,6 +72,20 @@ export default function Upload({ addFiles, setPage, onRequireAuth }) {
               onChange={onFiles}
             />
           </label>
+          <button type="button" className="secondary full camera-trigger" onClick={() => setCameraOpen(true)}>
+            Chụp ảnh trực tiếp bằng camera
+          </button>
+
+          {cameraOpen && (
+            <CameraCapture
+              onCapture={(file) => {
+                setCameraOpen(false)
+                setSelected([file])
+                processImage(file)
+              }}
+              onClose={() => setCameraOpen(false)}
+            />
+          )}
 
           {selected.length > 0 && (
             <div className="file-list">
@@ -74,6 +102,14 @@ export default function Upload({ addFiles, setPage, onRequireAuth }) {
               ))}
             </div>
           )}
+
+          <OcrResult
+            source={ocrSource}
+            status={status}
+            progress={progress}
+            result={result}
+            error={error}
+          />
 
           <button
             className="primary full"

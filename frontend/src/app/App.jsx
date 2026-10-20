@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import Sidebar from './components/Sidebar'
-import Header from './components/Header'
-import Dashboard from './pages/Dashboard'
-import Files from './pages/Files'
-import Upload from './pages/Upload'
-import Warnings from './pages/Warnings'
-import Profile from './pages/Profile'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import Sidebar from '../components/layout/Sidebar'
+import Header from '../components/layout/Header'
+import Dashboard from '../pages/dashboard/Dashboard'
+import Files from '../pages/admissions/Files'
+import Upload from '../pages/admissions/Upload'
+import Warnings from '../pages/admissions/Warnings'
+import Profile from '../pages/profile/Profile'
+import Login from '../pages/auth/Login'
+import Register from '../pages/auth/Register'
 
 export default function App() {
   // --- Quản lý điều hướng & giao diện ---
@@ -170,4 +170,3 @@ export default function App() {
     </div>
   )
 }
-

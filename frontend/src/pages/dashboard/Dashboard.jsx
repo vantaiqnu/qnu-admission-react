@@ -1,4 +1,4 @@
-import StatCard from '../components/StatCard'
+import StatCard from '../../components/dashboard/StatCard'
 
 export default function Dashboard({ files, setPage }) {
   const processing = files.filter((f) => f.status === 'Đang xử lý').length
@@ -53,4 +53,3 @@ export default function Dashboard({ files, setPage }) {
     </>
   )
 }
-
